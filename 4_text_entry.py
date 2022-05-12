@@ -9,7 +9,6 @@ root.resizable(False, True) # 창 크기 변경 불가 (X측, Y측)
 
 txt = Text(root, width=30, heigh=5)
 txt.pack()
-
 txt.insert(END, "글자를 입력하세요")
 
 e = Entry(root, width=30)    # 한줄짜리. 엔터 불가능
@@ -18,8 +17,13 @@ e.insert(0, "한 줄만 입력하세요")
 
 
 def btncmd():
+    #글자 추출
     print(txt.get("1.0", END))  # 1.0 --> 1: 라인수, 0:글자위치  부터 글자를 추출하는 것. END -> 어디까지
     print(e.get())
+
+    #삭제
+    txt.delete("1.0", END)
+    e.delete(0, END)
 
 btn = Button(root, text="클릭", command=btncmd)
 btn.pack()
