@@ -1,26 +1,35 @@
+from operator import truediv
 from tkinter import *
+import os
+
+filename = "mynote.txt"
 
 root = Tk()
 root.title("제목 없음 - Windows 메모장")
 root.geometry("640x480+1200+600")  #크기지정 + 위치지정 ("가로x세로+x측+y측")
 root.resizable(True, True)
 
-txt = Text(root, width=640, height=480)
-txt.pack()
+#스크롤
 scrollbar = Scrollbar(root)
 scrollbar.pack(side="right", fill="y")
 
+#텍스트공간
+txt = Text(root, yscrollcommand=scrollbar.set)
+txt.pack(side="left", fill="both", expand=True)
+
+scrollbar.config(command=txt.yview)
+
 def save_file():
-    with open("mynote.txt", "w", encoding="UTF8") as write_file:
+    with open(filename, "w", encoding="UTF8") as write_file:
         write_file.write(txt.get("0.1", END))
 
 menubar = Menu(root)
 
 def open_file():
-    with open("mynote.txt", "r", encoding="UTF8") as open_file:
-        txt = Text(root, width=640, height=480)
-        txt.pack()
-        txt.insert(0, open_file.read)
+    if os.path.isfile(filename):
+        txt.delete("1.0", END)
+        with open(filename, "r", encoding="UTF8") as file:
+            txt.insert(END, file.read())
 
 menu_file = Menu(menubar, tearoff=0)
 menu_file.add_command(label="열기(O)", command=open_file)
